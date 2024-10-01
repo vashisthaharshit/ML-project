@@ -119,7 +119,7 @@
         <label for="model">Select Model:</label>
         <select id="model" name="model" required onchange="updateHyperparams()">
             <option value="random_forest">Random Forest</option>
-            <option value="logistic_regression">Logistic Regression</option>
+            <option value="svm">SVM</option>
             <option value="xgboost">XGBoost</option>
         </select>
 
@@ -140,13 +140,23 @@
             <input type="range" id="min_samples_split" name="min_samples_split" min="2" value="2" oninput="updateValue('min_samples_split')">
         </div>
 
-        <div id="logistic_regression" class="hyperparam">
-            <label for="C">C (Inverse Regularization Strength):</label>
-            <input type="number" name="C" step="0.01" min="0.01" value="1.0">
-            <label for="penalty">Penalty:</label>
-            <select name="penalty" required>
-                <option value="l2">L2</option>
-                <option value="l1">L1</option>
+        <div id="svm" class="hyperparam">
+            <label for="C">C (Inverse Regularization Strength):
+                <span id="C_value">1.0</span> <!-- Added display for C -->
+            </label>
+            <input type="number" id="C" name="C" step="0.01" min="0.01" value="1.0" oninput="updateValue('C')">
+        
+            <label for="degree">Degree:
+                <span id="degree_value">1</span>
+            </label>
+            <input type="range" id="degree" name="degree" min="1" max="5" value="1" oninput="updateValue('degree')">
+            
+            <label for="kernel">Penalty:</label>
+            <select name="kernel" required>
+                <option value="linear">linear</option>
+                <option value="poly">poly</option>
+                <option value="rbf">rbf</option>
+                <option value="sigmoid">sigmoid</option>
             </select>
         </div>
 
@@ -167,7 +177,20 @@
 
         <input type="submit" value="Generate Plot">
     </form>
-    
+
+    <table>
+        <tr>
+            <th>R2 Score</th>
+            <th>Mean Absolute Error</th>
+            <th>Mean Squared Error</th>
+        </tr>
+        <tr>
+            <td>{{r2}}</td>
+            <td>{{ mae }}</td>
+            <td>{{ mse }}</td>
+        </tr>
+    </table>
+
     {% if plot_image %}
         <h2>Decision Boundary Plot:</h2>
         <img src="data:image/png;base64,{{ plot_image }}" alt="Decision Boundary">

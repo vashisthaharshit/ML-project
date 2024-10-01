@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import index
+from .views import index, regressor
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('classify/', index, name='index'),
+    path('regressor/', regressor, name='regressor'),
 ]
